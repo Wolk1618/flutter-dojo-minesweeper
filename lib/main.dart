@@ -1,10 +1,12 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-const bombIndexes = [2, 22, 41, 42, 52, 63, 64, 72, 77];
+List<int> bombIndexes = [];
+var randGenerator = Random();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,13 +19,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key) {
+    generateBombs();
+  }
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -95,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() {
                   selectedIndexes.clear();
+                  generateBombs();
                   Navigator.of(context).pop();
                 });
               },
@@ -163,4 +168,11 @@ List<int> getIndexesAround(index) {
     surrounds = [index-1, index-10, index-9, index+8, index+9];
   }
   return surrounds;
+}
+
+void generateBombs() {
+  bombIndexes.clear();
+  for(int i=0; i<9; i++) {
+    bombIndexes.add(randGenerator.nextInt(81));
+  }
 }
